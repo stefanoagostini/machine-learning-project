@@ -1,0 +1,7 @@
+.dccache
+
+glove.6B.300d.pickle
+glove.6B.300d.txt
+yelp_academic_dataset_review.json
+yelp_ridotto2.json
+yelp_ridotto3.json

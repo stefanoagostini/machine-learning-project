@@ -1,0 +1,7 @@
+local att only è la local user e la local item messe insieme
+idem per la global only
+
+
+
+i local scores devono essere presi solo per le parole dentro la review (user,item) 
+=> get_items deve estrarre anche da che indiche a che indice è la review (u,i) all'interno del D(u) e del D(i)
