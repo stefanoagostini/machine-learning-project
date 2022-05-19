@@ -1,0 +1,1 @@
+in questa cartella devono essere inseriti il database Yelp e GloVe
