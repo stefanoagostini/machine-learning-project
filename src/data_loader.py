@@ -32,9 +32,8 @@ class ReviewDataset(data.Dataset):
 
     def __getitem__(self, index):
         row = self.dataset.iloc[index]
-        user_id = row['user_id']
-        business_id = row['business_id']
-        review = row['text']
+        user_id = row['user_id']  # serve per la query sul dataframe
+        business_id = row['business_id']  # serve per la query sul dataframe
         # user review
         user_data = self.dataset.query(
             "user_id == @user_id").drop(columns=['user_id', 'business_id', 'stars'])
@@ -56,11 +55,8 @@ class ReviewDataset(data.Dataset):
         return (user_review, item_review, target)
 
     def get_item_for_test(self):
-        sample = self.dataset.sample()
-        user_id = sample['user_id']
-        business_id = sample['business_id']
-        review = sample['text']
-        print(sample)
+        sample = self.dataset.sample(
+            random_state=np.random.Generator(np.random.PCG64()))
         # user review
         user_review = self.preprocess_review(sample)
         # item review
@@ -75,7 +71,7 @@ class ReviewDataset(data.Dataset):
             item_review = torch.from_numpy(item_review).float()
         else:
             return None
-        return (user_review, item_review, target)
+        return [sample['text'], user_review, item_review, target]
 
     def __len__(self):
         """ Returns the number of reviews in the dataset"""
