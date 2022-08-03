@@ -2,7 +2,6 @@ import os
 
 import torch
 import torch.nn as nn
-import numpy as np
 
 import data_loader
 import model

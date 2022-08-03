@@ -21,16 +21,19 @@ Spiegazione dei file:
 
 5.testing.py
 		            => viene usato il miglior modello della cartella models (model_epoch_ 2.pth) per vedere la loss sul db di test
-                ==> Test Loss: 
+                ==> Test Loss: 1.0442044208372445
 
-6.testing_lattn.py
+6.testing_lattn_only.py
 		            => viene usato il miglior modello della cartella models (model_epoch_lattn_ 2.pth) per vedere la loss sul db di test
-                ==> Test Loss: 
+                ==> Test Loss: 1.0425667070356526
 
-7.testing_gattn.py
+7.testing_gattn_only.py
 		            => viene usato il miglior modello della cartella models (model_epoch_GAttn_ 5.pth) per vedere la loss sul db di test
-                ==> Test Loss: 
+                ==> Test Loss: 1.0420926401489659
 
+8.comparing.py
+                => 
+                
 *. utility.py 
 		    => contiene una funzione per stampare a video una review con le parole colorate
 
