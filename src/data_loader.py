@@ -71,7 +71,7 @@ class ReviewDataset(data.Dataset):
             item_review = torch.from_numpy(item_review).float()
         else:
             return None
-        return [sample['text'], user_review, item_review, target]
+        return [sample["text"], user_review, item_review, target]
 
     def __len__(self):
         """ Returns the number of reviews in the dataset"""

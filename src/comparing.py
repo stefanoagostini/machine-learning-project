@@ -28,7 +28,7 @@ print("Sample input...")
 
 input = test_loader.dataset.dataset.get_item_for_test()
 
-print(input[0])
+print(f'Input: {input[0]}')
 
 print("==================================================================================")
 
@@ -37,6 +37,14 @@ print("Loading model...")
 DAttn = model.DAttn(input_size)
 GAttOnly = model.GAttOnly(input_size)
 LAttOnly = model.LAttOnly(input_size)
+
+activation = {}
+
+
+def get_activation(layer_name, model_name):
+    def hook(model, input, output):
+        activation[model_name][layer_name] = output.detach()
+    return hook
 
 
 DAttn.load_state_dict(torch.load(model_path))
@@ -59,6 +67,23 @@ DAttn.eval()
 GAttOnly.eval()
 LAttOnly.eval()
 
+DAttn.localAttentionLayer_user.register_forward_hook(
+    get_activation("localAttentionLayer_user", "DAttn"))
+DAttn.localAttentionLayer_item.register_forward_hook(
+    get_activation("localAttentionLayer_item", "DAttn"))
+DAttn.globalAttentionLayer_user.register_forward_hook(
+    get_activation("globalAttentionLayer_user", "DAttn"))
+DAttn.globalAttentionLayer_item.register_forward_hook(
+    get_activation("globalAttentionLayer_item", "DAttn"))
+GAttOnly.globalAttentionLayer_user.register_forward_hook(
+    get_activation("globalAttentionLayer_user", "GAttOnly"))
+GAttOnly.globalAttentionLayer_item.register_forward_hook(
+    get_activation("globalAttentionLayer_item", "GAttOnly"))
+LAttOnly.localAttentionLayer_user.register_forward_hook(
+    get_activation("localAttentionLayer_user", "LAttOnly"))
+LAttOnly.localAttentionLayer_item.register_forward_hook(
+    get_activation("localAttentionLayer_item", "LAttOnly"))
+
 
 user = utility.to_var(input[1])
 item = utility.to_var(input[2])
@@ -69,6 +94,8 @@ outputs_DAttn = DAttn(user, item)
 loss = criterion(outputs_DAttn, labels)
 test_loss = loss.item()
 print(f'Test Loss: {test_loss}')
+print("DAttn localAttentionLayer_user",
+      activation["DAttn"]["localAttentionLayer_user"])
 
 print("GAttOnly")
 outputs_GAttOnly = GAttOnly(user, item)
@@ -81,3 +108,5 @@ outputs_LAttOnly = LAttOnly(user, item)
 loss = criterion(outputs_LAttOnly, labels)
 test_loss = loss.item()
 print(f'Test Loss: {test_loss}')
+
+print("==================================================================================")
